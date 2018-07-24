@@ -29,3 +29,11 @@ CREATE TABLE users (
     reading_list text,
     recommendation_list text
 );
+
+CREATE table ratings (
+    id SERIAL4 PRIMARY KEY,
+    book_id integer not null,
+    foreign key (book_id) references books (id) on delete restrict,
+    user_id integer,
+    score VARCHAR(100)
+);

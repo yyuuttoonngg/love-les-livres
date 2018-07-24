@@ -40,9 +40,17 @@ end
 
 get '/book' do
   @id =params[:id]
+  if Rating.exists?(user_id: current_user.user_id, book_id: params[:id])
+    rating = Rating.find_by(user_id: current_user.user_id, book_id: params[:id])
+    @current_score = rating.score
+  else 
+    @current_score = "rate now"
+  end
+  
   if Book.exists?(id=@id) 
     @book = Book.find(@id)
   else
+
     url = "https://www.goodreads.com/book/show/#{@id}?key=BVBuna3XmFczBJfVWObKeg"
     results = HTTParty.get(url)
     @book = results.parsed_response["GoodreadsResponse"]["book"]
@@ -55,13 +63,14 @@ get '/book' do
       book.author = @book["authors"]["author"][0]["name"]
     end
 
-    if @book["series_works"]["series_work"].class == Array
+    if @book["series_works"]!=nil &&@book["series_works"]["series_work"].class == Array
       book.series_title = @book["series_works"]["series_work"][0]["series"]["title"]
       book.series_number = @book["series_works"]["series_work"][0]["user_position"]
-    else
+    elsif @book["series_works"]!=nil
       book.series_title = @book["series_works"]["series_work"]["series"]["title"]
       book.series_number = @book["series_works"]["series_work"]["user_position"]
     end 
+
     book.publication_year = @book["publication_year"]
     book.image_url = @book["image_url"]
     book.small_image_url = @book["small_image_url"]
@@ -70,7 +79,14 @@ get '/book' do
     book.ratings_count = @book["ratings_count"]
     book.save
     @book = Book.find(@id)
+    
   end
+
+
+
+
+
+  
   erb :book
 end
 
@@ -127,5 +143,21 @@ post '/signup' do
     user.save
     redirect '/'
   end
-
 end 
+
+put '/ratings/:id' do
+  if Rating.exists?(user_id: current_user.user_id, book_id: params[:id])
+    rating = Rating.find_by(user_id: current_user.user_id, book_id:params[:id])
+    rating.score = params[:score]
+    rating.save
+  else
+    rating = Rating.new
+    rating.user_id = current_user.user_id
+    rating.score = params[:score]
+    rating.book_id = params[:id]
+    rating.save
+    
+  end
+  redirect "/book?id=#{params[:id]}"
+end
+
