@@ -1,0 +1,53 @@
+
+* {
+    background-color: rgba(255, 228, 225, 0.872);
+    margin: 0 auto;
+}
+header{
+    margin: 2%;
+}
+body{
+    width: 95%;
+}
+
+.main, .top{
+    display: flex;
+    justify-content: space-between;
+}
+header{
+    width: 50%;
+    display: flex;
+    text-align: left;
+  
+
+}
+.left{
+    width:35%;
+    border:1px solid black;
+    
+}
+.right{
+    width:60%;
+}
+section{
+    height: 600px;
+    margin: 3% auto;
+}
+.right div{
+    border: 1px solid black;
+    height:49%;
+    margin-bottom:2%;
+}
+.search-bar, .search-btn{
+    font-size:1.3em;
+    vertical-align: bottom;
+}
+footer{
+    position: absolute;
+    bottom:3%;
+}
+
+footer img {
+    height: 2em;
+    width: 2em;
+}

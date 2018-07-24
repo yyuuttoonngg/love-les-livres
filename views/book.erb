@@ -1,0 +1,9 @@
+<h1><%=  @book['title']%></h1>
+<%if @book.series_title %>
+    <p>The No.<%=@book.series_number%> book of <%=@book.series_title%> series</p>
+<%end %>
+<p><%=@book.author%></p>
+<p><%=  @book["publication_year"] %></p>
+<p><img src=<%= @book["image_url"] %> alt="movie poster not avaiable"></p>
+<p><%=  @book["description"] %></p>
+<p>Goodreads ratings: <%=@book.goodreadrating%>by <%=@book.ratings_count%> readers</p>

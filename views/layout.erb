@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World</title>
+  <link rel='stylesheet' href='/stylesheets/main.css'>
+</head>
+<body>
+  <header>
+    <a href="/">home</a>
+    <% if logged_in? %>
+      <p>Welcome back <%= current_user.name %></p>
+      <form action="/session" method ="post">
+        <input type="hidden" name="_method" value="delete">
+        <button>logout</button>
+      </form>
+      <a href="/account">edit account</a>
+    <%else%>
+      <a href="/login">login</a>
+    <% end %>
+  </header>
+
+  <%= yield %>
+
+  <footer>
+    <p>created by yyuuttoonngg <img src="/img/footer-img.png" alt=""></p>
+    <p>using API from <a href="https://www.goodreads.com/">goodreads</a></p>
+    <audio src="meow2.wav"></audio>
+  
+  </footer>
+  <script src="javascripts/application.js"></script>
+
+
+</body>
+</html>

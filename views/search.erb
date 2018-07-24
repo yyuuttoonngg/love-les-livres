@@ -1,0 +1,5 @@
+<p>Did you mean</p>
+
+<%@books.each do |book|%>
+<p><img src="<%=book['best_book']['small_image_url']%>" alt=""><a href ="/book?id=<%=book["best_book"]["id"]%>"><%=book["best_book"]["title"]%></a> by <%=book["best_book"]["author"]["name"]%></p>
+<%end%>
