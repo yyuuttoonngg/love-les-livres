@@ -10,9 +10,29 @@
     <section class ="left">
         <div class =friends></div>
     </section>
+
     <section class= "right">
         <div class ="notifications"></div>
-        <div class ="booklists"></div>
+        <div class ="booklists">
+            <div class="read">
+                <p>Read</p>
+                <p>You have read  <%=@read.length%> books this year!</p>
+                <% @read.each do |id|%>
+                    <%book = Book.find(id)%>
+                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
+                <%end%>
+            </div>
+            <div class="reading">
+                <p>Reading</p>
+                <% @reading.each do |id|%>
+                    <%book = Book.find(id)%>
+                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
+                    <p><%=book.title%></p>
+                    <p>By <%=book.author%></p></a>
+                <%end%>
+            </div>
+        </div>
+
     </section>
     
 </div>

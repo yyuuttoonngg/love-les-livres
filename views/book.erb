@@ -15,7 +15,7 @@
 <form action="/ratings/<%=@book.id%>" method ="post">
     <input type="hidden" name = "_method" value ='put'>
     <label for="">my rating </label>
-    <input type="text" name ="score" value="<%=@current_score%>">
+    <input type="text" name ="score" placeholder="<%=@current_score%>">
     <input type="hidden" name ="user_id" value ="<%=current_user.user_id%>" >
     <input type="hidden" name ="book_id" value ="<%=@book.id%>">
     <button>edit</button>

@@ -10,7 +10,17 @@ require_relative 'models/rating'
 require_relative 'models/comment'
 enable :sessions
 
+
 get '/' do
+  current_user.reading_list??
+     @reading = current_user.reading_list.split(","): @reading = [] 
+  current_user.read_list??
+     @read=current_user.read_list.split(","): @read=[]
+  current_user.to_read_list??
+    @to_read=current_user.to_read_list.split(","): @to_read=[]
+    p @to_read
+    p @reading
+    p @read
   erb :index
 end
 
@@ -46,7 +56,7 @@ get '/book' do
   else 
     @current_score = "rate now"
   end
-  
+
   if Book.exists?(id=@id) 
     @book = Book.find(@id)
   else
@@ -79,14 +89,7 @@ get '/book' do
     book.ratings_count = @book["ratings_count"]
     book.save
     @book = Book.find(@id)
-    
   end
-
-
-
-
-
-  
   erb :book
 end
 
@@ -156,7 +159,6 @@ put '/ratings/:id' do
     rating.score = params[:score]
     rating.book_id = params[:id]
     rating.save
-    
   end
   redirect "/book?id=#{params[:id]}"
 end
