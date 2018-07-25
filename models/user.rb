@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
     has_secure_password
-    has_friendship
+    has_many :ratings
+    has_many :status
+  
 end

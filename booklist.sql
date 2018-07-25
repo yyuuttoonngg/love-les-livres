@@ -44,3 +44,18 @@ CREATE table statuses (
     user_id integer,
     on_list VARCHAR(100)
 );
+
+CREATE table friendships (
+    id SERIAL4 PRIMARY KEY,
+    id_from integer,
+    id_to integer,
+    friend_type VARCHAR(100)
+);
+
+CREATE table chats (
+    id SERIAL4 PRIMARY KEY,
+    chat_id_from integer,
+    chat_id_to integer,
+    chat_type VARCHAR(100),
+    chat_content text
+);

@@ -9,6 +9,8 @@ require_relative 'models/user'
 require_relative 'models/rating'
 require_relative 'models/comment'
 require_relative 'models/status'
+require_relative 'models/friendship'
+require_relative 'models/chat'
 enable :sessions
 
 
@@ -26,6 +28,7 @@ get '/' do
     Rating.where(book_id: book["book_id"], score: book["score"]).map do |person|
      user = User.find_by(user_id: person["user_id"])
       @same_score_users << user
+      @same_score_users.delete current_user
     end
     @same_score_users.uniq!
   end 
@@ -60,6 +63,7 @@ get '/error' do
 end 
 
 get '/book' do
+  redirect'/login' unless logged_in?
   @id =params[:id]
 
   # check if book is on user's lists
@@ -112,6 +116,7 @@ get '/book' do
 end
 
 get '/account' do
+  redirect'/login' unless logged_in?
   erb :account
 end
 
@@ -166,6 +171,7 @@ post '/signup' do
 end 
 
 put '/ratings/:id' do
+  redirect'/login' unless logged_in?
   if Rating.exists?(user_id: current_user.user_id, book_id: params[:id])
     rating = Rating.find_by(user_id: current_user.user_id, book_id:params[:id])
     rating.score = params[:score]
@@ -181,9 +187,7 @@ put '/ratings/:id' do
 end
 
 put '/status/:id' do
-  p'aaaaaaaaa'
-  p params[:status]
-
+  redirect'/login' unless logged_in?
   if Status.exists?(user_id: current_user.user_id, book_id:params[:id])
     status = Status.find_by(user_id: current_user.user_id, book_id:params[:id])
   else 
@@ -206,6 +210,7 @@ get '/user_details' do
 end 
 
 get '/profile/:user_id' do 
+  redirect'/login' unless logged_in?
   user_id = params[:user_id]
   @user = User.find_by(user_id: user_id)
   p !!@user.friendship
@@ -230,13 +235,50 @@ get '/profile/:user_id' do
   end
 
   if Status.exists?(user_id: user_id)
-
      @friend_read_books = Status.where(user_id: user_id, on_list: "read").map{|a|Book.find_by(id: a.book_id)}
      p @friend_read_books
-
-
   end 
 
-
+  if Friendship.exists?(id_from: current_user.user_id, id_to: user_id)
+    @friendship= Friendship.find_by(id_from: current_user.user_id, id_to: user_id)
+    @friendship_type = @friendship.friend_type
+  end
   erb :profile
 end 
+
+get '/favorite/:id' do
+  redirect'/login' unless logged_in?
+  if Friendship.exists?(id_from: current_user.user_id, id_to: params[:id])
+    friendship= Friendship.find_by(id_from: current_user.user_id, id_to: params[:id])
+  else
+    friendship = Friendship.new
+    friendship.id_from = current_user.user_id
+    friendship.id_to = params[:id]
+  end
+  friendship.friend_type ="favorite"
+  friendship.save
+  redirect "/profile/#{params[:id]}"
+end
+
+get '/block/:id' do
+  redirect'/login' unless logged_in?
+  if Friendship.exists?(id_from: current_user.user_id, id_to: params[:id])
+    friendship= Friendship.find_by(id_from: current_user.user_id, id_to: params[:id])
+  else
+    friendship = Friendship.new
+    friendship.id_from = current_user.user_id
+    friendship.id_to = params[:id]
+  end
+  friendship.friend_type ="block"
+  friendship.save
+  redirect "/profile/#{params[:id]}"
+end
+
+get '/unblock/:id' do
+  redirect'/login' unless logged_in?
+  friendship= Friendship.find_by(id_from: current_user.user_id, id_to: params[:id])
+  friendship.friend_type = ""
+  friendship.save
+  redirect "/profile/#{params[:id]}"
+end
+  
