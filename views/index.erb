@@ -6,7 +6,7 @@
 </form>
 </div>
 
-<div class= "main">
+<div class= "middle">
     <section class ="left">
         <div class =friends></div>
     </section>
@@ -16,7 +16,8 @@
         <div class ="booklists">
             <div class="read">
                 <p>Read</p>
-                <p>You have read  <%=@read.length%> books this year!</p>
+                <p><button>edit</button></p>
+                <p>You have read  <%=@read.length%> books so far!</p>
                 <% @read.each do |id|%>
                     <%book = Book.find(id)%>
                     <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
@@ -24,6 +25,7 @@
             </div>
             <div class="reading">
                 <p>Reading</p>
+                <p><button>edit</button></p>
                 <% @reading.each do |id|%>
                     <%book = Book.find(id)%>
                     <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">

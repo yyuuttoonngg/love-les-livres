@@ -8,19 +8,15 @@ require_relative 'models/book'
 require_relative 'models/user'
 require_relative 'models/rating'
 require_relative 'models/comment'
+require_relative 'models/status'
 enable :sessions
 
 
 get '/' do
-  current_user.reading_list??
-     @reading = current_user.reading_list.split(","): @reading = [] 
-  current_user.read_list??
-     @read=current_user.read_list.split(","): @read=[]
-  current_user.to_read_list??
-    @to_read=current_user.to_read_list.split(","): @to_read=[]
-    p @to_read
-    p @reading
-    p @read
+  redirect'/login' unless logged_in?
+  @reading = Status.where(user_id: current_user.user_id, on_list: "reading").map{|a|a.book_id}
+  @read = Status.where(user_id: current_user.user_id, on_list: "read").map{|a|a.book_id}
+  @to_read = Status.where(user_id: current_user.user_id, on_list: "to_read").map{|a|a.book_id}
   erb :index
 end
 
@@ -50,6 +46,14 @@ end
 
 get '/book' do
   @id =params[:id]
+
+  # check if book is on user's lists
+  if Status.exists?(user_id: current_user.user_id, book_id: params[:id])
+    status = Status.find_by(user_id: current_user.user_id, book_id: params[:id])
+    @on_list = status.on_list
+  end 
+
+  # check if have been rated by current user, if exists, diplaying the rating
   if Rating.exists?(user_id: current_user.user_id, book_id: params[:id])
     rating = Rating.find_by(user_id: current_user.user_id, book_id: params[:id])
     @current_score = rating.score
@@ -57,10 +61,10 @@ get '/book' do
     @current_score = "rate now"
   end
 
+  # check if book already saved in books table
   if Book.exists?(id=@id) 
     @book = Book.find(@id)
   else
-
     url = "https://www.goodreads.com/book/show/#{@id}?key=BVBuna3XmFczBJfVWObKeg"
     results = HTTParty.get(url)
     @book = results.parsed_response["GoodreadsResponse"]["book"]
@@ -80,7 +84,6 @@ get '/book' do
       book.series_title = @book["series_works"]["series_work"]["series"]["title"]
       book.series_number = @book["series_works"]["series_work"]["user_position"]
     end 
-
     book.publication_year = @book["publication_year"]
     book.image_url = @book["image_url"]
     book.small_image_url = @book["small_image_url"]
@@ -133,7 +136,6 @@ post '/rating' do
 end
 
 post '/signup' do
-  p 'signup'
   if User.exists?(email: params[:email])
     p 'email taken'
     redirect '/login'
@@ -163,3 +165,23 @@ put '/ratings/:id' do
   redirect "/book?id=#{params[:id]}"
 end
 
+put '/status/:id' do
+  p'aaaaaaaaa'
+  p params[:status]
+
+  if Status.exists?(user_id: current_user.user_id, book_id:params[:id])
+    status = Status.find_by(user_id: current_user.user_id, book_id:params[:id])
+  else 
+    status = Status.new
+    status.book_id= params[:id]
+    status.user_id = current_user.user_id
+  end
+
+  if params[:status] == "delete"
+    status.destroy
+  else 
+    status.on_list = params[:status]
+  end 
+  status.save
+  redirect "/book?id=#{params[:id]}"
+end 

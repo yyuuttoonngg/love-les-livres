@@ -4,13 +4,35 @@
 <%end %>
 <p><%=@book.author%></p>
 <p><%=  @book["publication_year"] %></p>
+<p>Goodreads ratings: <%=@book.goodreadrating%> by <%=@book.ratings_count%> readers</p>
 <p><img src=<%= @book["image_url"] %> alt="movie poster not avaiable"></p>
+
+<%if @on_list %>
+    <p>on your <%=@on_list%> list</p>
+<%else%>
+    <p><button>add to your list</button></p>
+<%end%>
+
+    <form action="/status/<%=@book.id%>" method ="post" class ="select">
+    <input type="hidden" name = "_method" value ='put'>
+    <select name="status">
+        <option value="reading">reading</option>
+        <option value="to_read">to read</option>
+        <option value="read">read</option>
+        <option value="delete">delete</option>
+    </select>
+    <input type="hidden" name ="user_id" value ="<%=current_user.user_id%>" >
+    <input type="hidden" name ="book_id" value ="<%=@book.id%>">
+    <input type="submit">
+
+</form>
+
+
+
+
+
+
 <p><%=  @book["description"] %></p>
-<p>Goodreads ratings: <%=@book.goodreadrating%>by <%=@book.ratings_count%> readers</p>
-
-
-<p><%=@book["book_id"]%></p>
-
 
 <form action="/ratings/<%=@book.id%>" method ="post">
     <input type="hidden" name = "_method" value ='put'>

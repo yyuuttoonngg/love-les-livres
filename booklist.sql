@@ -37,3 +37,10 @@ CREATE table ratings (
     user_id integer,
     score VARCHAR(100)
 );
+CREATE table statuses (
+    id SERIAL4 PRIMARY KEY,
+    book_id integer not null,
+    foreign key (book_id) references books (id) on delete restrict,
+    user_id integer,
+    on_list VARCHAR(100)
+);
