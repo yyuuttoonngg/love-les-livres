@@ -32,8 +32,12 @@ get '/' do
     end
     @same_score_users.uniq!
   end 
-  p 'my friendssssss'
-  p @same_score_users
+  # chats section
+    if Chat.exists?(chat_id_to: current_user.user_id)
+      p @chats =Chat.where(chat_id_to: current_user.user_id)
+    else
+      #show some random thing
+    end
 
   erb :index
 end
@@ -281,4 +285,39 @@ get '/unblock/:id' do
   friendship.save
   redirect "/profile/#{params[:id]}"
 end
+
+get '/message/:name' do
+  erb :message
+end
+
+post '/message' do
+  name = params[:name]
+  @user = User.find_by(name: name)
+  message= Chat.new
+  message.chat_id_from = current_user.user_id
+  message.chat_id_to = @user.user_id
+  message.chat_name_to = name
+  message.chat_content = params[:content]
+  message.chat_type ="message"
+  message.save
+  redirect '/'
+end 
+
+get '/recommend/:name' do
+  erb :recommend
+end
+
+post '/recommend' do
+  name = params[:name]
+  @user = User.find_by(name: name)
+  message= Chat.new
+  message.chat_id_from = current_user.user_id
+  message.chat_id_to = @user.user_id
+  message.chat_name_to = name
+  message.chat_content = params[:content]
+  message.chat_type ="recommend"
+  message.save
+  redirect '/'
+end 
+
   

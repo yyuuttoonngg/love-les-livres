@@ -56,6 +56,7 @@ CREATE table chats (
     id SERIAL4 PRIMARY KEY,
     chat_id_from integer,
     chat_id_to integer,
+    chat_name_to VARCHAR(100),
     chat_type VARCHAR(100),
     chat_content text
 );

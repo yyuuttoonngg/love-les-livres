@@ -8,7 +8,15 @@
 
 <div class= "middle">
     <section class ="left">
-        <div class =friends></div>
+        <div class =friends>
+            <%if @chats%>
+                <%@chats.each do |chat|%>
+                    <p><%=chat.chat_type%></p>
+                    <p><%=chat.chat_name_to%></p>
+                    <p><%=chat.chat_content%></p>
+                <%end%>
+            <%end%>
+        </div>
     </section>
 
     <section class= "right">
