@@ -1,0 +1,21 @@
+<h1>user's profile</h1>
+
+<div class = "bio">
+    <p>Name: <%=@user.name%></p>
+    <p>Location: <%=@user.location%></p>
+    <p>Interes: <%=@interets.join(",")%></p>
+</div>
+
+<div class ="reading_status">
+    <p>books <%=@user.name%> has read </p>
+    <%@friend_read_books.each do |book|%>
+    <p><img src="<%=book.small_image_url%>" alt="">
+    <%=book.title%><p>
+    <%end%>
+</div>
+
+<div class="addfriend">
+    <p><button>add friend</button></p>
+    <p><button>recommend book</button></p>
+    <p><button>send message</button></p>
+</div>

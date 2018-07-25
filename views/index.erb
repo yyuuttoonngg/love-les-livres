@@ -12,8 +12,22 @@
     </section>
 
     <section class= "right">
-        <div class ="notifications"></div>
+        <div class ="notifications">
+            <div>
+                <p>people rated the same scores as you</p>
+                <%@same_score_users.each do |user|%>
+                    <%if user.profile_image%>
+                        <img src="<%=user.profile_image%>">
+                        <a href="/profile/<%=user.user_id%>">user <%=user.name%></a>
+                    <% else %>
+                        <img src="/img/error.png" class = "profile-img"><a href="/profile/<%=user.user_id%>"><%=user.name%></a>
+                    <%end%>
+                <%end%>
+            </div>
+        </div>
+
         <div class ="booklists">
+            <div class ="books">
             <div class="read">
                 <p>Read</p>
                 <p><button>edit</button></p>
@@ -22,6 +36,16 @@
                     <%book = Book.find(id)%>
                     <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
                 <%end%>
+            </div>
+
+            <div class="to_read">
+                <p>To Read</p>
+                <p><button>edit</button></p>
+                <% @to_read.each do |id|%>
+                    <%book = Book.find(id)%>
+                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
+                <%end%>
+            </div>
             </div>
             <div class="reading">
                 <p>Reading</p>

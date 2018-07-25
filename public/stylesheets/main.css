@@ -19,7 +19,6 @@ header{
     display: flex;
     text-align: left;
   
-
 }
 .left{
     width:35%;
@@ -35,8 +34,13 @@ section{
 }
 .booklists,.notifications{
     border: 1px solid black;
-    height:49%;
     margin-bottom:2%;
+}
+.booklists{
+    height:60%;
+}
+.notifications{
+    height:36%;
 }
 .search-bar, .search-btn{
     font-size:1.3em;
@@ -55,7 +59,7 @@ footer img {
     display: flex;
     justify-content: space-around;
 }
-.read{
+.books{
     width: 60%;
     height: 100%;
 
@@ -66,5 +70,9 @@ footer img {
     height: 100%;
     margin: auto;
    
+}
+.profile-img{
+    width: 30px;
+    height: 30px;
 }
 

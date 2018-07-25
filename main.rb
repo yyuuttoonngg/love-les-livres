@@ -14,9 +14,24 @@ enable :sessions
 
 get '/' do
   redirect'/login' unless logged_in?
+  # booklists section 
   @reading = Status.where(user_id: current_user.user_id, on_list: "reading").map{|a|a.book_id}
   @read = Status.where(user_id: current_user.user_id, on_list: "read").map{|a|a.book_id}
   @to_read = Status.where(user_id: current_user.user_id, on_list: "to_read").map{|a|a.book_id}
+
+  # notification section
+  books = Rating.where(user_id: current_user.user_id).map{|a|{ "book_id" =>a.book_id,"score"=>a.score}}
+  @same_score_users =[]
+  books.each do |book|
+    Rating.where(book_id: book["book_id"], score: book["score"]).map do |person|
+     user = User.find_by(user_id: person["user_id"])
+      @same_score_users << user
+    end
+    @same_score_users.uniq!
+  end 
+  p 'my friendssssss'
+  p @same_score_users
+
   erb :index
 end
 
@@ -184,4 +199,44 @@ put '/status/:id' do
   end 
   status.save
   redirect "/book?id=#{params[:id]}"
+end 
+
+get '/user_details' do 
+  erb :user_details
+end 
+
+get '/profile/:user_id' do 
+  user_id = params[:user_id]
+  @user = User.find_by(user_id: user_id)
+  p !!@user.friendship
+  p !!@user.dating
+
+  @interets =[]
+  if @user.friendship
+    @interets.push "Making new friends"
+  end
+  if @user.dating
+    @interets.push "Dating"
+  end
+  if @user.recommendation
+    @interets.push "Finding good books"
+  end
+
+  if @user.debate
+    @interets.push "Debating"
+  end
+  if @interets.length == 0
+    @interets = ["#{@user.name} is too lazy to like anything!! Don't be like #{@user.name}."]
+  end
+
+  if Status.exists?(user_id: user_id)
+
+     @friend_read_books = Status.where(user_id: user_id, on_list: "read").map{|a|Book.find_by(id: a.book_id)}
+     p @friend_read_books
+
+
+  end 
+
+
+  erb :profile
 end 
