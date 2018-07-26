@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/reloader'
+# require 'sinatra/reloader'
 require 'sinatra/flash'
 require 'pg'
 require 'httparty'

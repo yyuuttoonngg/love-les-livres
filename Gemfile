@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+gem 'activerecord'
 gem 'sinatra'
-gem 'bootstrap', '~> 4.1.2'
-gem 'simple_form'
+gem 'pg'
+gem 'bcrypt'
+gem 'httparty'
+gem 'pry'
+gem 'sinatra-flash'
+ruby '2.5.1'
