@@ -60,3 +60,4 @@ CREATE table chats (
     chat_type VARCHAR(100),
     chat_content text
 );
+
