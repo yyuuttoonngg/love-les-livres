@@ -4,7 +4,7 @@
     <div class = "bio">
         <p>Name: <%=@user.name%></p>
         <p>Location: <%=@user.location%></p>
-        <p>Interets: <%=@interets.join(",")%></p>
+        <p>Interets: <%=@interets.join(", ")%></p>
     </div>
 
     <div class="friendship">
@@ -15,11 +15,10 @@
         <%elsif @friendship_type == "block"%>
             <p>you have blocked this user, do you wish to <a href="/unblock/<%=@user.id%>">unblock</a>
             ?</p>
-        <%elsif @friendship_type == ""%>
+        <%else%>
             <a href="/favorite/<%=@user.id%>">add to favorite</a>
             <a href="/block/<%=@user.id%>">block user</a>
         <%end%>
-
     </div>
 
     <%if @friendship_type !="block"%>

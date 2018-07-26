@@ -1,3 +1,48 @@
-<h1>the account page</h1>
+<h1>Manage your account</h1> 
+ <div class="account">
+    <img src="<%=current_user.profile_image%>" alt="" class="profile-img-large">
+    
+    <form action="/save_image" method="POST" enctype="multipart/form-data">
+
+        <label for="">change profile picture</label>
+        <input type="file" name="file" accept="image/*">
+        <input type="submit" value="Upload image">
+        <br>
+    </form>
+
+    <p><%=flash[:error]%></p>
+
+    <form action="/account" method="post" class="account-form">
+        <input type="hidden" name = "_method" value ='put'>
+
+        <label for="">User name</label>
+        <input type="text" name ="name" value = "<%=current_user.name%>">
+        <br>
+
+        <label for="">email</label>
+        <input type="text" name ="email" value = "<%=current_user.email%>">
+        <br>
+
+        <label for="">new password</label>
+        <input type="password" name ="password1">
+        <br>
+        <label for="">repeat</label>
+        <input type="password" name ="password2">
+        <br>
+
+        <label for="">location</label>
+        <input type="text" name ="location" value = "<%=current_user.location%>">
+        <br>
+
+        <p class="checkbox">choose what are you interested in</p>
+        <input type="checkbox" name="dating" value="dating" class="checkbox"> Dating<br>
+        <input type="checkbox" name="recommendation" value="recommendation" class="checkbox">Book Recommendations <br>
+        <input type="checkbox" name="friendship" value="friendship" class="checkbox">New friends<br>
+        <input type="checkbox" name="debate" value="debate" class="checkbox">Just chats<br>
+        <button>save changes</button>
+    </form>
 
 
+  
+
+</div>

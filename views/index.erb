@@ -1,14 +1,15 @@
 <div class= "middle">
-    <section class ="left">
-        <div class ="friends">
-            <%if @chats%>
-                <%@chats.each do |chat|%>
-                    <p><%=chat.chat_type%></p>
-                    <p><%=chat.chat_name_to%></p>
-                    <p><%=chat.chat_content%></p>
-                <%end%>
+    <section class ="left">   
+        <%if @chats%>           
+            <%@chats.each do |chat|%>
+                <div class ="chat-board">
+                    <p class="chat-type"><%=chat.chat_type%></p>
+                    <p class ="chat-sender">from<%=chat.chat_name_to%></p>
+                    <p class= "chat-content"><%=chat.chat_content%></p>
+                </div>
             <%end%>
-        </div>
+            <%end%>
+        
     </section>
 
     <section class= "right">
@@ -29,8 +30,7 @@
         <div class ="booklists">
             <div class ="books">
             <div class="read">
-                <p>Read</p>
-                <p><button>edit</button></p>
+                <p><a href="/shelf"> Read</a></p>
                 <p>You have read  <%=@read.length%> books so far!</p>
                 <% @read.each do |id|%>
                     <%book = Book.find(id)%>
@@ -39,8 +39,7 @@
             </div>
 
             <div class="to_read">
-                <p>To Read</p>
-                <p><button>edit</button></p>
+                <p><a href="/shelf"> To Read</a></p>
                 <% @to_read.each do |id|%>
                     <%book = Book.find(id)%>
                     <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
@@ -48,8 +47,7 @@
             </div>
             </div>
             <div class="reading">
-                <p>Reading</p>
-                <p><button>edit</button></p>
+                <p><a href="/shelf">Reading</a> </p>
                 <% @reading.each do |id|%>
                     <%book = Book.find(id)%>
                     <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">

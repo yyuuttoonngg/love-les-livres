@@ -1,5 +1,7 @@
 <div class="login">
     <p>Welcome to the fun book place !</p>
+    <p><%=flash[:error]%></p>
+
     <form action="/signup" method ="post">
         <p>
             <label for="">email</label>
@@ -11,7 +13,9 @@
         </p>
         <p>
             <label for="">password</label>
-            <input type="password" name ="password">
+            <input type="password" name ="password1">
+            <label for="">repeat</label>
+            <input type="password" name ="password2">
         </p>
         <p><button>create account</button></p>
     </form>

@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/flash'
 require 'pg'
 require 'httparty'
 # require 'active_support'
@@ -93,7 +94,11 @@ get '/book' do
     @book = results.parsed_response["GoodreadsResponse"]["book"]
     book = Book.new
     book.id = @id
-    book.title = @book["title"]
+    if !!@book["work"]["original_title"] 
+     book.title = @book["work"]["original_title"]
+    else book.title = @book["title"]
+    end
+    
     if @book["authors"].length == 1 && @book["authors"]["author"].class == Hash
       book.author = @book["authors"]["author"]["name"]
     else
@@ -160,17 +165,29 @@ post '/rating' do
 end
 
 post '/signup' do
-  if User.exists?(email: params[:email])
-    p 'email taken'
-    redirect '/login'
+  flash.clear
+  if params[:email]=='' || params[:name]==''  ||params[:password1]=='' || params[:password2]=='' 
+    flash[:error] = 'please fill all the fields'
+    redirect '/signup'
   else
-    p 'new user'
-    user = User.new
-    user.email = params[:email]
-    user.name = params[:name]
-    user.password = params[:password]
-    user.save
-    redirect '/'
+    if User.exists?(email: params[:email])
+      flash[:error] = 'email exists'
+      redirect '/signup'
+
+    elsif User.exists?(name: params[:name])
+      flash[:error] = 'user name taken'
+      redirect '/signup'
+    elsif params[:password1] !=params[:password2]
+      flash[:error] = 'please enter matching passwords'
+      redirect '/signup'
+    else
+      p 'new user'
+      user = User.new
+      user.email = params[:email]
+      user.name = params[:name]
+      user.password = params[:password]
+      user.save
+    end
   end
 end 
 
@@ -316,4 +333,77 @@ post '/recommend' do
   redirect '/'
 end 
 
-  
+get '/shelf' do
+  erb :shelf
+end
+
+put '/account' do
+  flash.clear
+  user= User.find(current_user.id)
+  if params[:name]!=user.name && User.find_by(name:params[:name])
+    flash[:error] = 'user name taken'
+    redirect'/account'
+  elsif params[:name]==''
+    flash[:error] = 'please choose a name'
+    redirect'/account'
+  else
+    user.name = params[:name]
+  end
+
+  if params[:email]!=user.email && User.find_by(email:params[:email])
+    flash[:error] = 'email is taken'
+    redirect'/account'
+  elsif params[:email]==''
+    flash[:email] = 'please enter a valid email'
+    redirect'/account'
+  else
+    user.email = params[:email]
+  end
+
+  if params[:password1]!= '' && params[:password1] !=params[:password2]
+    flash[:error] = 'passwords not match'
+    redirect'/account'
+  end
+
+  user.location = params[:location].downcase!
+
+  if params[:friendship]=="friendship"
+    user.friendship = true
+  end
+  if params[:dating]=="dating"
+    user.dating = true
+  end
+  if params[:debate]=="debate"
+    user.debate = true
+  end
+  if params[:recommendation]=="recommendation"
+    user.recommendation = true
+  end
+  user.save
+  redirect '/'
+end 
+
+post '/save_image' do
+  @filename = params[:file][:filename]
+  file = params[:file][:tempfile]
+
+  File.open("./public/#{@filename}", 'wb') do |f|
+    f.write(file.read)
+  end
+  user= User.find(current_user.id)
+  user.profile_image = "./#{@filename}"
+  user.save
+  redirect '/account'
+end
+
+get '/password' do
+  erb :password
+end
+
+put '/password' do
+  if current_user.authenticate(params[:password])
+    redirect '/account'
+  else 
+    erb :login
+  end
+end
