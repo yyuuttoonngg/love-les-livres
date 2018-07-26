@@ -1,14 +1,6 @@
-<div class ="top">
-<h1>love les livres</h1>
-<form action="/search" method="get">
-    <input name = "name" type="text" placeholder ="Search Books" class ="search-bar">
-    <button class="search-btn">search</button>
-</form>
-</div>
-
 <div class= "middle">
     <section class ="left">
-        <div class =friends>
+        <div class ="friends">
             <%if @chats%>
                 <%@chats.each do |chat|%>
                     <p><%=chat.chat_type%></p>

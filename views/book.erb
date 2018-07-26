@@ -1,45 +1,51 @@
+<div class = "bookdetail">
+
 <h1><%=  @book['title']%></h1>
-<%if @book.series_title %>
-    <p>The No.<%=@book.series_number%> book of <%=@book.series_title%> series</p>
-<%end %>
-<p><%=@book.author%></p>
-<p><%=  @book["publication_year"] %></p>
-<p>Goodreads ratings: <%=@book.goodreadrating%> by <%=@book.ratings_count%> readers</p>
-<p><img src=<%= @book["image_url"] %> alt="movie poster not avaiable"></p>
 
-<%if @on_list %>
-    <p>on your <%=@on_list%> list</p>
-<%else%>
-    <p><button>add to your list</button></p>
-<%end%>
+<div class ="book-both">
+    <div class ="book-left">
+        <p><img src=<%= @book["image_url"] %> alt="movie poster not avaiable"></p>
+        <%if @book.series_title %>
+            <p><%=@book.series_title%> series, book <%=@book.series_number%></p>
+        <%end %>
+        <p>By <%=@book.author%></p>
+        <p>Published <%= @book["publication_year"]%></p>
+        <p>Goodreads: <%=@book.goodreadrating%> by <%=@book.ratings_count%> readers</p>
 
-    <form action="/status/<%=@book.id%>" method ="post" class ="select">
-    <input type="hidden" name = "_method" value ='put'>
-    <select name="status">
-        <option value="reading">reading</option>
-        <option value="to_read">to read</option>
-        <option value="read">read</option>
-        <option value="delete">delete</option>
-    </select>
-    <input type="hidden" name ="user_id" value ="<%=current_user.user_id%>" >
-    <input type="hidden" name ="book_id" value ="<%=@book.id%>">
-    <input type="submit">
+        <%if @on_list %>
+            <p>on your <%=@on_list%> list</p>
+        <%else%>
+            <p><button>add to your list</button></p>
+        <%end%>
 
-</form>
+        <form action="/status/<%=@book.id%>" method ="post" class ="select">
+            <input type="hidden" name = "_method" value ='put'>
+            <select name="status">
+                <option value="reading">reading</option>
+                <option value="to_read">to read</option>
+                <option value="read">read</option>
+                <option value="delete">delete</option>
+            </select>
+            <input type="hidden" name ="user_id" value ="<%=current_user.user_id%>" >
+            <input type="hidden" name ="book_id" value ="<%=@book.id%>">
+            <input type="submit">
+        </form>
+    </div>
 
+    <div class="book-right">
+            <p><%=  @book["description"] %></p>
+    </div>
+</div>
 
+<div class="rating">
+    <form action="/ratings/<%=@book.id%>" method ="post">
+        <input type="hidden" name = "_method" value ='put'>
+        <label for="">my rating </label>
+        <input type="text" name ="score" placeholder="<%=@current_score%>">
+        <input type="hidden" name ="user_id" value ="<%=current_user.user_id%>" >
+        <input type="hidden" name ="book_id" value ="<%=@book.id%>">
+        <button>edit</button>
+    </form>
+</div>
 
-
-
-
-<p><%=  @book["description"] %></p>
-
-<form action="/ratings/<%=@book.id%>" method ="post">
-    <input type="hidden" name = "_method" value ='put'>
-    <label for="">my rating </label>
-    <input type="text" name ="score" placeholder="<%=@current_score%>">
-    <input type="hidden" name ="user_id" value ="<%=current_user.user_id%>" >
-    <input type="hidden" name ="book_id" value ="<%=@book.id%>">
-    <button>edit</button>
-</form>
-
+</div>

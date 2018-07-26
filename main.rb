@@ -209,10 +209,6 @@ put '/status/:id' do
   redirect "/book?id=#{params[:id]}"
 end 
 
-get '/user_details' do 
-  erb :user_details
-end 
-
 get '/profile/:user_id' do 
   redirect'/login' unless logged_in?
   user_id = params[:user_id]

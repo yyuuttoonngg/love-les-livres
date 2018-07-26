@@ -1,10 +1,14 @@
-<p>message</p>
-
-<form action="/message" method ="post">
-<label for="">message</label>
-<input type="text" name ="content">
-
-<label for="">send to</label>
-<input type="text" name ="name" value="<%=params[:name]%>">
-<button>send</button>
-</form>
+<div class ="message login">
+    <p>message</p>
+    <form action="/message" method ="post">
+        <p>
+            <label for="">send to</label>
+            <input type="text" name ="name" value="<%=params[:name]%>">
+        </p>
+        <p  class ="message-content">
+            <label for="">message</label>
+            <input type="text" name ="content">
+        </p>
+        <button>send</button>
+    </form>
+</div>

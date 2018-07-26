@@ -1,10 +1,16 @@
-<p>recommend</p>
+<div class ="login message">
+    <p>recommend a book</p>
+   
+    <form action="/recommend" method ="post">
+    <p>
+        <label for="">to</label>
+        <input type="text" name ="name" value="<%=params[:name]%>">
+    </p>
+    <p class="message-content">
+        <label for="">book</label>
+        <input type="text" name ="content">
+    </p>
 
-<form action="/recommend" method ="post">
-<label for="">recommend book</label>
-<input type="text" name ="content">
-
-<label for="">send to</label>
-<input type="text" name ="name" value="<%=params[:name]%>">
-<button>send</button>
-</form>
+    <button>send</button>
+    </form>
+</div>
