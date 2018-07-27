@@ -1,5 +1,5 @@
 require 'sinatra'
-# require 'sinatra/reloader'
+require 'sinatra/reloader'
 require 'sinatra/flash'
 require 'pg'
 require 'httparty'
@@ -37,7 +37,7 @@ get '/' do
     if Chat.exists?(chat_id_to: current_user.user_id)
       p @chats =Chat.where(chat_id_to: current_user.user_id)
     else
-      #show some random thing
+      @random_blah = "Wow, you don't have any friends to talk to? TOO SAD...."
     end
 
   erb :index
@@ -164,30 +164,30 @@ post '/rating' do
   redirect'/login' unless logged_in?
 end
 
-post '/signup' do
+put '/signup' do
   flash.clear
-  if params[:email]=='' || params[:name]==''  ||params[:password1]=='' || params[:password2]=='' 
+  if params[:email]=='' || params[:name]==''  ||params[:ps1]=='' || params[:ps2]=='' 
     flash[:error] = 'please fill all the fields'
     redirect '/signup'
-  else
-    if User.exists?(email: params[:email])
+  elsif User.exists?(email: params[:email])
       flash[:error] = 'email exists'
       redirect '/signup'
 
-    elsif User.exists?(name: params[:name])
-      flash[:error] = 'user name taken'
-      redirect '/signup'
-    elsif params[:password1] !=params[:password2]
-      flash[:error] = 'please enter matching passwords'
-      redirect '/signup'
-    else
-      p 'new user'
+  elsif User.exists?(name: params[:name])
+    flash[:error] = 'user name taken'
+    redirect '/signup'
+  elsif params[:ps1] !=params[:ps2]
+    flash[:error] = 'please enter matching passwords'
+    redirect '/signup'
+  else
       user = User.new
       user.email = params[:email]
       user.name = params[:name]
-      user.password = params[:password]
+      user.password = params[:ps1]
       user.save
-    end
+      user = User.find_by(email: params[:email])
+      session[:user_id] = user.id
+      redirect '/'
   end
 end 
 
@@ -310,6 +310,7 @@ post '/message' do
   message.chat_id_from = current_user.user_id
   message.chat_id_to = @user.user_id
   message.chat_name_to = name
+  message.chat_name_from = current_user.name
   message.chat_content = params[:content]
   message.chat_type ="message"
   message.save
@@ -327,6 +328,7 @@ post '/recommend' do
   message.chat_id_from = current_user.user_id
   message.chat_id_to = @user.user_id
   message.chat_name_to = name
+  message.chat_name_from = current_user.name
   message.chat_content = params[:content]
   message.chat_type ="recommend"
   message.save
@@ -361,7 +363,7 @@ put '/account' do
   end
 
   if params[:password1]!= '' && params[:password1] !=params[:password2]
-    flash[:error] = 'passwords not match'
+    flash[:error] = 'please enter matching passwords'
     redirect'/account'
   end
 
@@ -387,7 +389,7 @@ post '/save_image' do
   @filename = params[:file][:filename]
   file = params[:file][:tempfile]
 
-  File.open("./public/#{@filename}", 'wb') do |f|
+  File.open("./public/profile-img/#{@filename}", 'wb') do |f|
     f.write(file.read)
   end
   user= User.find(current_user.id)

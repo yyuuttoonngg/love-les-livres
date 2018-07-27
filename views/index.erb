@@ -4,11 +4,15 @@
             <%@chats.each do |chat|%>
                 <div class ="chat-board">
                     <p class="chat-type"><%=chat.chat_type%></p>
-                    <p class ="chat-sender">from<%=chat.chat_name_to%></p>
+                    <p class ="chat-sender">from user: <%=chat.chat_name_from%></p>
                     <p class= "chat-content"><%=chat.chat_content%></p>
                 </div>
             <%end%>
-            <%end%>
+        <%end%>
+        <%if @random_blah%>
+            <p class ="random-blah"><%=@random_blah%></p>
+        <%end%>
+
         
     </section>
 
@@ -34,7 +38,8 @@
                 <p>You have read  <%=@read.length%> books so far!</p>
                 <% @read.each do |id|%>
                     <%book = Book.find(id)%>
-                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
+                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
+                    <p><%=book.title%></p></a>
                 <%end%>
             </div>
 
@@ -42,7 +47,8 @@
                 <p><a href="/shelf"> To Read</a></p>
                 <% @to_read.each do |id|%>
                     <%book = Book.find(id)%>
-                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt=""></a>
+                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
+                    <p><%=book.title%></p></a>
                 <%end%>
             </div>
             </div>

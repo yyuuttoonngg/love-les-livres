@@ -159,8 +159,8 @@ footer a{
    
 }
 .profile-img{
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 .profile-img-large{
     width: 60px;
@@ -252,4 +252,12 @@ footer a{
 }
 .read{
     margin-bottom: 5%;
+}
+.header-right{
+    margin: -1% 0 -1% 2%;
+    padding:0;
+}
+.random-blah{
+    font-size:1.2em;
+    margin: auto;
 }
