@@ -1,4 +1,18 @@
-<p>bookshelfs</p>
-<p>read</p>
-<p>toread</p>
-<p>reading</p>
+<div class="user-profile">
+    <p>MY BOOKSHELFS</p>
+    <p>READ</p>
+        <%@readshelf.each do |book|%>
+            <img src="<%=book.small_image_url%>" alt="">
+            <p><%=book.title%> by <%=book.author%></p>
+        <%end%>
+    <p>TO READ</p>
+        <%@readingshelf.each do |book|%>
+            <img src="<%=book.small_image_url%>" alt="">
+            <p><%=book.title%> by <%=book.author%></p>
+        <%end%>
+    <p>READING</p>
+        <%@toreadshelf.each do |book|%>
+            <img src="<%=book.small_image_url%>" alt="">
+            <p><%=book.title%> by <%=book.author%></p>
+        <%end%>
+</div>

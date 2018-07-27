@@ -261,3 +261,24 @@ footer a{
     font-size:1.2em;
     margin: auto;
 }
+.shelf-frontpage a {
+    border-bottom:2px solid rgb(131, 126, 114); 
+    overflow: hidden;
+    margin:0 6px;
+}
+.book-frontpage{
+    display: flex;
+    margin: 2px;
+    font-size: 0.7em;
+    justify-content: left;
+}
+.book-frontpage a {
+    width: 70px;
+    height: 120px;
+    overflow: hidden;
+    margin: 3px;
+    text-align: center;
+}
+.book-frontpage a:hover{
+    background-color: rgba(181, 157, 121, 0.4);
+}

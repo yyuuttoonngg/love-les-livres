@@ -336,6 +336,9 @@ post '/recommend' do
 end 
 
 get '/shelf' do
+  @readshelf = Status.where(user_id: current_user.user_id, on_list: "read").map{|a|Book.find_by(id: a.book_id)}
+  @readingshelf = Status.where(user_id: current_user.user_id, on_list: "reading").map{|a|Book.find_by(id: a.book_id)}
+  @toreadshelf = Status.where(user_id: current_user.user_id, on_list: "to_read").map{|a|Book.find_by(id: a.book_id)}
   erb :shelf
 end
 

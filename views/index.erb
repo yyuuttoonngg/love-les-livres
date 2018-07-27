@@ -34,32 +34,44 @@
         <div class ="booklists">
             <div class ="books">
             <div class="read">
-                <p><a href="/shelf"> Read</a></p>
-                <p>You have read  <%=@read.length%> books so far!</p>
-                <% @read.each do |id|%>
-                    <%book = Book.find(id)%>
-                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
-                    <p><%=book.title%></p></a>
-                <%end%>
+                <p class ="shelf-frontpage"><a href="/shelf"> Read</a></p>
+               
+                    <%if @read.length==0%>
+                        <p>You haven't read any book! Or just forgot to add them?? </p>
+                    <%else%>
+                        <p>You have read  <%=@read.length%> books so far!</p>
+                    <%end%>
+                     <div class="book-frontpage">
+                    <% @read.each do |id|%>
+                        <%book = Book.find(id)%>
+                        <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
+                        <p><%=book.title%></p></a>
+                    <%end%>
+                </div>
             </div>
 
             <div class="to_read">
-                <p><a href="/shelf"> To Read</a></p>
-                <% @to_read.each do |id|%>
-                    <%book = Book.find(id)%>
-                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
-                    <p><%=book.title%></p></a>
-                <%end%>
+                <p class ="shelf-frontpage"><a href="/shelf"> To Read</a></p>
+                <div class="book-frontpage">
+                    <% @to_read.each do |id|%>
+                        <%book = Book.find(id)%>
+                        <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
+                        <p><%=book.title%></p></a>
+                    <%end%>
+                </div>
             </div>
             </div>
+
             <div class="reading">
-                <p><a href="/shelf">Reading</a> </p>
-                <% @reading.each do |id|%>
-                    <%book = Book.find(id)%>
-                    <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
-                    <p><%=book.title%></p>
-                    <p>By <%=book.author%></p></a>
-                <%end%>
+                <p class ="shelf-frontpage"><a href="/shelf">Reading</a> </p>
+                <div class="book-frontpage">
+                    <% @reading.each do |id|%>
+                        <%book = Book.find(id)%>
+                        <a href="/book?id=<%=id%>"><img src="<%=book.small_image_url%>" alt="">
+                        <p><%=book.title%></p>
+                        <p>By <%=book.author%></p></a>
+                    <%end%>
+                </div>
             </div>
         </div>
 
